@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  card1: MyString
+  card2: MyString
+  card3: MyString
+  card4: MyString
+  card5: MyString
+  rank_id: 1
+
+two:
+  card1: MyString
+  card2: MyString
+  card3: MyString
+  card4: MyString
+  card5: MyString
+  rank_id: 1
