@@ -1,7 +1,7 @@
 class Api::HandsController < ApplicationController
 
     def index
-        @hands = Hand.all.includes(:rank)
+        @hands = Hand.all.includes(:hand_rank)
         render 'api/hands/index'
     end
 
@@ -14,6 +14,7 @@ class Api::HandsController < ApplicationController
         if valid_cards && correct_number_of_cards
             verified_hand = {}
             unverified_hand.each_with_index {|card, i| verified_hand["card" + (i+1).to_s] = card }  #reformat the now verified cards for creation of hand obj
+            debugger
             @hand = Hand.new(verified_hand)
             if @hand.save
                 render 'api/hands/show'

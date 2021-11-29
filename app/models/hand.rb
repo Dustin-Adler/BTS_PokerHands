@@ -1,9 +1,9 @@
 class Hand < ApplicationRecord
-    # validates :card1, :card2, :card3, :card4, :card5, :rank_id, presence: true
+    validates :card1, :card2, :card3, :card4, :card5, :rank_id, presence: true
     
     before_validation :ensure_rank
 
-    belongs_to :rank, 
+    belongs_to :hand_rank, 
         foreign_key: :rank_id, 
         class_name: :Rank
         
@@ -30,23 +30,23 @@ class Hand < ApplicationRecord
         high_card = true
 
         if straight_flush 
-            self.rank_id = 1
+            self.rank_id = Rank.find_by(hand_name: 'Straight Flush').id
         elsif four_of_a_kind
-            self.rank_id = 2
+            self.rank_id = Rank.find_by(hand_name: 'Four of a Kind').id
         elsif full_house
-            self.rank_id = 3
+            self.rank_id = Rank.find_by(hand_name: 'Full House').id
         elsif flush
-            self.rank_id = 4
+            self.rank_id = Rank.find_by(hand_name: 'Flush').id
         elsif straight
-            self.rank_id = 5
+            self.rank_id = Rank.find_by(hand_name: 'Straight').id
         elsif three_of_a_kind
-            self.rank_id = 6
+            self.rank_id = Rank.find_by(hand_name: 'Three of a Kind').id
         elsif two_pair
-            self.rank_id = 7
+            self.rank_id = Rank.find_by(hand_name: 'Two Pair').id
         elsif pair
-            self.rank_id = 8
+            self.rank_id = Rank.find_by(hand_name: 'Pair').id
         else
-            self.rank_id = 9
+            self.rank_id = Rank.find_by(hand_name: 'High Card').id
         end
     end
 
