@@ -5,13 +5,16 @@ import {
 } from '../actions/hand_actions'
 
 const handReducer = (state = {}, action) => {
+
     switch (action.type) {
         case RECEIVE_HANDS:
-            return action.cartItems
+            // debugger
+            return action.hands
 
         case RECEIVE_HAND:
-            return {...state, [action.cartItem.id]: action.cartItem}
-
+            // debugger
+            return {...state, [action.hand.id]: action.hand}
+            
         case REMOVE_HAND:
             const newState = {...state}
             delete newState[action.id]

@@ -9,7 +9,7 @@ import {
 } from '../../actions/hand_actions'
 
 const mSTP = (state) => {
-
+    
     return {
         hands: Object.values(state.hands)
     }

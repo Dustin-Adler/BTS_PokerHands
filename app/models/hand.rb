@@ -1,10 +1,10 @@
 class Hand < ApplicationRecord
-    validates :card1, :card2, :card3, :card4, :card5, :rank, presence: true
+    # validates :card1, :card2, :card3, :card4, :card5, :rank_id, presence: true
     
     before_validation :ensure_rank
 
     belongs_to :rank, 
-        foreign_key: :rank, 
+        foreign_key: :rank_id, 
         class_name: :Rank
 
         
@@ -34,7 +34,7 @@ class Hand < ApplicationRecord
 
         #logic used to determine what rank to give the hand
         flush = suits.all?{ |el| el == suits[0]} 
-        straight = values[1..-1].each_with_index.all? { |el, i| el == values[i-1] + 1}
+        straight = values[1..-1].each_with_index.all? { |el, i| el == values[i] + 1}
         straight_flush = flush && straight
         four_of_a_kind = value_count.values.any? {|el| el == 4}
         three_of_a_kind = value_count.values.any? {|el| el == 3}
@@ -45,24 +45,23 @@ class Hand < ApplicationRecord
         high_card = true
 
         if straight_flush 
-            self.rank = 1
+            self.rank_id = 1
         elsif four_of_a_kind
-            self.rank = 2
+            self.rank_id = 2
         elsif full_house
-            self.rank = 3
+            self.rank_id = 3
         elsif flush
-            self.rank = 4
+            self.rank_id = 4
         elsif straight
-            self.rank = 5
+            self.rank_id = 5
         elsif three_of_a_kind
-            self.rank = 6
+            self.rank_id = 6
         elsif two_pair
-            self.rank = 7
+            self.rank_id = 7
         elsif pair
-            self.rank = 8
+            self.rank_id = 8
         else
-            self.rank = 9
+            self.rank_id = 9
         end
     end
-
 end
