@@ -13,6 +13,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "RECEIVE_HANDS": () => (/* binding */ RECEIVE_HANDS),
 /* harmony export */   "RECEIVE_HAND": () => (/* binding */ RECEIVE_HAND),
 /* harmony export */   "REMOVE_HAND": () => (/* binding */ REMOVE_HAND),
+/* harmony export */   "RECEIVE_ERRORS": () => (/* binding */ RECEIVE_ERRORS),
+/* harmony export */   "CLEAR_ERRORS": () => (/* binding */ CLEAR_ERRORS),
+/* harmony export */   "clearErrors": () => (/* binding */ clearErrors),
 /* harmony export */   "getHands": () => (/* binding */ getHands),
 /* harmony export */   "getHand": () => (/* binding */ getHand),
 /* harmony export */   "createHand": () => (/* binding */ createHand),
@@ -24,6 +27,8 @@ __webpack_require__.r(__webpack_exports__);
 var RECEIVE_HANDS = 'RECEIVE_HANDS';
 var RECEIVE_HAND = 'RECEIVE_HAND';
 var REMOVE_HAND = 'REMOVE_HAND';
+var RECEIVE_ERRORS = 'RECEIVE_ERRORS';
+var CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 var receiveHands = function receiveHands(hands) {
   return {
@@ -47,6 +52,18 @@ var removeHand = function removeHand(id) {
   };
 };
 
+var receiveErrors = function receiveErrors(errors) {
+  return {
+    type: RECEIVE_ERRORS,
+    errors: errors
+  };
+};
+
+var clearErrors = function clearErrors() {
+  return {
+    type: CLEAR_ERRORS
+  };
+};
 var getHands = function getHands() {
   return function (dispatch) {
     return _utils_hand_api_utils__WEBPACK_IMPORTED_MODULE_0__.getHands().then(function (recHands) {
@@ -66,6 +83,8 @@ var createHand = function createHand(hand) {
     // debugger
     return _utils_hand_api_utils__WEBPACK_IMPORTED_MODULE_0__.createHand(hand).then(function (recHand) {
       return dispatch(receiveHand(recHand));
+    }, function (error) {
+      return dispatch(receiveErrors(error.responseJSON));
     });
   };
 };
@@ -73,6 +92,8 @@ var updateHand = function updateHand(hand) {
   return function (dispatch) {
     return _utils_hand_api_utils__WEBPACK_IMPORTED_MODULE_0__.updateHand(hand).then(function (recHand) {
       return dispatch(receiveHand(recHand));
+    }, function (error) {
+      return dispatch(receiveErrors(error.responseJSON));
     });
   };
 };
