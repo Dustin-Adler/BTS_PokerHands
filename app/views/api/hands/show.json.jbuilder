@@ -1,0 +1,1 @@
+json.partial! 'api/hands/hand', hand: @hand

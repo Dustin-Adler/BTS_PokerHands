@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
 import handReducer from './hand_reducer';
-// import errorsReducer from './errors_reducer'
 
 const rootReducer = combineReducers({
-    hands: handReducer,
-    // errors: errorsReducer
+    hands: handReducer
 })
 
 export default rootReducer;

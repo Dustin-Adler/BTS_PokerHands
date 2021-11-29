@@ -9,10 +9,13 @@ const receiveHands = (hands) => ({
     hands
 })
 
-const receiveHand = (hand) => ({
-    type: RECEIVE_HAND, 
-    hand
-})
+const receiveHand = (hand) => {
+    // debugger
+    return {
+        type: RECEIVE_HAND, 
+        hand
+    }
+}
 
 const removeHand = (id) => ({
     type: REMOVE_HAND, 
@@ -20,22 +23,25 @@ const removeHand = (id) => ({
 })
 
 export const getHands = () => (dispatch) => (
-    HandAPIUtils.receiveHands()
+    HandAPIUtils.getHands()
     .then( recHands => dispatch(receiveHands(recHands)))
 )
 
 export const getHand = (id) => (dispatch) => (
-    HandAPIUtils.receiveHand(id)
+    HandAPIUtils.getHands(id)
     .then( recHand => dispatch(receiveHand(recHand)))
 )
 
-export const createHand = (hand) => (dispatch) => (
-    HandAPIUtils.createHand(hand)
-    .then( recHand => dispatch(receiveHand(recHand)))
-)
+export const createHand = (hand) => (dispatch) => {
+    // debugger
+    return(
+        HandAPIUtils.createHand(hand)
+        .then((recHand) => dispatch(receiveHand(recHand)))
+    )
+}
 
 export const updateHand = (hand) => (dispatch) => (
-    HandAPIUtils.createHand(hand)
+    HandAPIUtils.updateHand(hand)
     .then( recHand => dispatch(receiveHand(recHand)))
 )
 
