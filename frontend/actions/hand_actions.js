@@ -12,7 +12,6 @@ const receiveHands = (hands) => ({
 })
 
 const receiveHand = (hand) => {
-    // debugger
     return {
         type: RECEIVE_HAND, 
         hand
@@ -24,10 +23,12 @@ const removeHand = (id) => ({
     id,
 })
 
-const receiveErrors = (errors) => ({
-    type: RECEIVE_ERRORS, 
-    errors
-})
+const receiveErrors = (errors) => {
+    return {
+            type: RECEIVE_ERRORS, 
+            errors
+            }
+}
 
 export const clearErrors = () => ({
     type: CLEAR_ERRORS,
@@ -44,12 +45,11 @@ export const getHand = (id) => (dispatch) => (
 )
 
 export const createHand = (hand) => (dispatch) => {
-    // debugger
     return(
         HandAPIUtils.createHand(hand)
         .then(
             (recHand) => dispatch(receiveHand(recHand)), 
-            error => dispatch(receiveErrors(error.responseJSON))
+            error => dispatch(receiveErrors(error.responseText))
         )
     )
 }
@@ -58,7 +58,7 @@ export const updateHand = (hand) => (dispatch) => (
     HandAPIUtils.updateHand(hand)
     .then( 
         (recHand) => dispatch(receiveHand(recHand)), 
-        error => dispatch(receiveErrors(error.responseJSON))
+        error => dispatch(receiveErrors(error.responseText))
     )
 )
 

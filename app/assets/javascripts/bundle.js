@@ -38,7 +38,6 @@ var receiveHands = function receiveHands(hands) {
 };
 
 var receiveHand = function receiveHand(hand) {
-  // debugger
   return {
     type: RECEIVE_HAND,
     hand: hand
@@ -80,11 +79,10 @@ var getHand = function getHand(id) {
 };
 var createHand = function createHand(hand) {
   return function (dispatch) {
-    // debugger
     return _utils_hand_api_utils__WEBPACK_IMPORTED_MODULE_0__.createHand(hand).then(function (recHand) {
       return dispatch(receiveHand(recHand));
     }, function (error) {
-      return dispatch(receiveErrors(error.responseJSON));
+      return dispatch(receiveErrors(error.responseText));
     });
   };
 };
@@ -93,7 +91,7 @@ var updateHand = function updateHand(hand) {
     return _utils_hand_api_utils__WEBPACK_IMPORTED_MODULE_0__.updateHand(hand).then(function (recHand) {
       return dispatch(receiveHand(recHand));
     }, function (error) {
-      return dispatch(receiveErrors(error.responseJSON));
+      return dispatch(receiveErrors(error.responseText));
     });
   };
 };
@@ -205,38 +203,32 @@ var HandReader = /*#__PURE__*/function (_React$Component) {
           hand: ''
         });
       });
-    }
-  }, {
-    key: "handleUpdate",
-    value: function handleUpdate(id) {
-      var _this3 = this;
+    } // handleUpdate(id){
+    //     // e.preventDefault();
+    //     this.props.updateHand({
+    //         hand: this.state.hand, 
+    //         id: id
+    //     })
+    //     .then(() => this.setState({
+    //         hand: ''
+    //     }))
+    // }
 
-      // e.preventDefault();
-      this.props.updateHand({
-        hand: this.state.hand,
-        id: id
-      }).then(function () {
-        return _this3.setState({
-          hand: ''
-        });
-      });
-    }
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       if (!this.props.hands.length) {
         return null;
       }
 
-      var hand = this.props.hands[0]; // debugger
-
+      var hand = this.props.hands[0];
       var handHistory = this.props.hands.map(function (hand, id) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_poker_hand__WEBPACK_IMPORTED_MODULE_1__["default"], {
           key: id,
           hand: hand,
-          deleteHand: _this4.props.deleteHand
+          deleteHand: _this3.props.deleteHand
         });
       });
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -246,19 +238,23 @@ var HandReader = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Enter your desired poker hand here", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "text",
         onChange: function onChange(e) {
-          return _this4.setState({
+          return _this3.setState({
             hand: e.target.value
           });
         }
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "errors"
-      }, "Errors with entered hand"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-        onClick: function onClick() {
-          return _this4.handleUpdate(hand.id);
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        onClick: function onClick(e) {
+          e.preventDefault(), _this3.props.updateHand(_this3.state).then(function () {
+            return _this3.setState({
+              hand: ''
+            });
+          });
         }
       }, "Update Last Hand"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
         onClick: this.handleSubmit
-      }, "Create New Hand"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Hand Rank: ", hand.rank, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), "Cards: ", hand.card1, " ", hand.card2, " ", hand.card3, " ", hand.card4, " ", hand.card5, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+      }, "Create New Hand"), this.props.errors.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "errors"
+      }, this.props.errors) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Hand Rank: ", hand.rank, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), "Cards: ", hand.card1, " ", hand.card2, " ", hand.card3, " ", hand.card4, " ", hand.card5, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
         className: "instructions"
       }, "Please enter your hand as a space seperated list. ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), "For each desired card write the number of the card followed by the first letter in the name of the desired suit. ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), "For named cards, please use the first letter of the named card. ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), "Example Input: 2H 2D 2C KC QD")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "hand-history"
@@ -293,7 +289,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var mSTP = function mSTP(state) {
   return {
-    hands: Object.values(state.hands).reverse()
+    hands: Object.values(state.hands).reverse(),
+    errors: state.errors
   };
 };
 
@@ -420,6 +417,45 @@ var Root = function Root(_ref) {
 
 /***/ }),
 
+/***/ "./frontend/reducers/error_reducer.js":
+/*!********************************************!*\
+  !*** ./frontend/reducers/error_reducer.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/hand_actions */ "./frontend/actions/hand_actions.js");
+
+
+var errorsReducer = function errorsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_ERRORS:
+      debugger;
+      return action.errors;
+
+    case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.CLEAR_ERRORS:
+      return [];
+
+    case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_HAND:
+      return [];
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (errorsReducer);
+
+/***/ }),
+
 /***/ "./frontend/reducers/hand_reducer.js":
 /*!*******************************************!*\
   !*** ./frontend/reducers/hand_reducer.js ***!
@@ -446,11 +482,9 @@ var handReducer = function handReducer() {
 
   switch (action.type) {
     case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_HANDS:
-      // debugger
       return action.hands;
 
     case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_HAND:
-      // debugger
       return _objectSpread(_objectSpread({}, state), {}, _defineProperty({}, action.hand.id, action.hand));
 
     case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.REMOVE_HAND:
@@ -479,12 +513,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _hand_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hand_reducer */ "./frontend/reducers/hand_reducer.js");
+/* harmony import */ var _error_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error_reducer */ "./frontend/reducers/error_reducer.js");
 
 
-var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_1__.combineReducers)({
-  hands: _hand_reducer__WEBPACK_IMPORTED_MODULE_0__["default"]
+
+var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
+  hands: _hand_reducer__WEBPACK_IMPORTED_MODULE_0__["default"],
+  errors: _error_reducer__WEBPACK_IMPORTED_MODULE_1__["default"]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (rootReducer);
 

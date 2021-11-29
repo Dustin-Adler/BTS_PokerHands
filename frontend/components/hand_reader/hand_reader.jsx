@@ -25,16 +25,16 @@ class HandReader extends React.Component {
         }))
     }
 
-    handleUpdate(id){
-        // e.preventDefault();
-        this.props.updateHand({
-            hand: this.state.hand, 
-            id: id
-        })
-        .then(() => this.setState({
-            hand: ''
-        }))
-    }
+    // handleUpdate(id){
+    //     // e.preventDefault();
+    //     this.props.updateHand({
+    //         hand: this.state.hand, 
+    //         id: id
+    //     })
+    //     .then(() => this.setState({
+    //         hand: ''
+    //     }))
+    // }
 
     render(){
 
@@ -42,7 +42,6 @@ class HandReader extends React.Component {
             return null
         }
         const hand = this.props.hands[0]
-        // debugger
         const handHistory = this.props.hands.map((hand, id) => 
             <PokerHand 
                 key={id} 
@@ -62,9 +61,23 @@ class HandReader extends React.Component {
                                 hand: e.target.value
                             })}/>
                     </label>
-                    <div className='errors'>Errors with entered hand</div>
-                    <button onClick={() => this.handleUpdate(hand.id)}>Update Last Hand</button>
+                    <br />
+                    <button onClick={ 
+                        (e) => {
+                            e.preventDefault(),
+                            this.props.updateHand(this.state)
+                            .then(()=> this.setState({
+                                hand: ''
+                            }))
+                        }}>
+                        Update Last Hand
+                    </button>
                     <button onClick={this.handleSubmit}>Create New Hand</button>
+                    {
+                    this.props.errors.length ? 
+                    <div className='errors'>{this.props.errors}</div> 
+                    : null
+                    }
                     <h2>
                         Hand Rank: {hand.rank} <br />
                         Cards: {hand.card1} {hand.card2} {hand.card3} {hand.card4} {hand.card5} <br />
