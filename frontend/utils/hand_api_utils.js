@@ -33,6 +33,6 @@ export const deleteHand = (id) => (
     $.ajax({
         url: `/api/hands/${id}`,
         method: 'delete', 
-        data:{hand}
+        data:{id}
     })
 )

@@ -1,4 +1,5 @@
 import React from 'react'
+import PokerHand from './poker_hand';
 
 class HandReader extends React.Component {
     constructor(props){
@@ -8,7 +9,8 @@ class HandReader extends React.Component {
             hand: ''
         }
         
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleUpdate = this.handleUpdate.bind(this)
     }
 
     componentDidMount(){
@@ -23,18 +25,35 @@ class HandReader extends React.Component {
         }))
     }
 
+    handleUpdate(id){
+        // e.preventDefault();
+        this.props.updateHand({
+            hand: this.state.hand, 
+            id: id
+        })
+        .then(() => this.setState({
+            hand: ''
+        }))
+    }
+
     render(){
 
         if (!this.props.hands.length){
             return null
         }
-        const hand = this.props.hands[this.props.hands.length - 1]
+        const hand = this.props.hands[0]
         // debugger
+        const handHistory = this.props.hands.map((hand, id) => 
+            <PokerHand 
+                key={id} 
+                hand={hand} 
+                deleteHand={this.props.deleteHand}/>
+        )
+
         return(
             <div className='layout'>
                 <h1>Poker Hand Checker</h1>
                 <form
-                    onSubmit={this.handleSubmit}
                     className='hand-form' >
                     <label>Enter your desired poker hand here<br />
                         <input 
@@ -44,9 +63,8 @@ class HandReader extends React.Component {
                             })}/>
                     </label>
                     <div className='errors'>Errors with entered hand</div>
-                    <button onClick={()=>this.props.updateHand(hand.id)}>Update Last Hand</button>
-                    <button>Create New Hand</button>
-                    <h4>Last card that was entered</h4>
+                    <button onClick={() => this.handleUpdate(hand.id)}>Update Last Hand</button>
+                    <button onClick={this.handleSubmit}>Create New Hand</button>
                     <h2>
                         Hand Rank: {hand.rank} <br />
                         Cards: {hand.card1} {hand.card2} {hand.card3} {hand.card4} {hand.card5} <br />
@@ -62,8 +80,8 @@ class HandReader extends React.Component {
                 </form>
 
                 <div className='hand-history'>
-                    <h3>Hand History</h3>
-
+                    <h3>Check out the other hands you've entered below.</h3>
+                    <div>{handHistory}</div>
                 </div>
             </div>
         )
