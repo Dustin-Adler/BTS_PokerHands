@@ -6,31 +6,16 @@ class Hand < ApplicationRecord
     belongs_to :rank, 
         foreign_key: :rank_id, 
         class_name: :Rank
-
         
     def ensure_rank
         #get values of all cards as ints and order them least to greatest
-        values = [
-                    self.card1[0].to_i, 
-                    self.card2[0].to_i, 
-                    self.card3[0].to_i, 
-                    self.card4[0].to_i, 
-                    self.card5[0].to_i
-                ].sort
-
-        #get suits of all cards   
-        suits = [
-                    self.card1[1], 
-                    self.card2[1], 
-                    self.card3[1], 
-                    self.card4[1], 
-                    self.card5[1]
-                ]
-        #create hash to count repeating card values
-        value_count = Hash.new {|h, k| h[k] = 0} 
-
-        #count repeated values
-        values.each {|el| value_count[el] += 1}  
+        values = []; suits = []
+        cards = [self.card1, self.card2, self.card3, self.card4, self.card5]
+        cards.each { |card| values.push(evaluate_card(card[0...-1])); suits.push(card[-1]) }
+        values.sort!
+        
+        value_count = Hash.new {|h, k| h[k] = 0} #create hash to count repeating card values
+        values.each {|el| value_count[el] += 1}  #count repeated values
 
         #logic used to determine what rank to give the hand
         flush = suits.all?{ |el| el == suits[0]} 
@@ -64,4 +49,23 @@ class Hand < ApplicationRecord
             self.rank_id = 9
         end
     end
+
+    private
+
+    def evaluate_card(card_value)
+        case card_value
+            when "J"
+                11
+            when "Q"
+                12
+            when "K" 
+                13
+            when "A"
+                14
+            else 
+                card_value.to_i
+        end
+
+    end
+
 end

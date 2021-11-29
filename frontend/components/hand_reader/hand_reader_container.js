@@ -11,7 +11,8 @@ import {
 const mSTP = (state) => {
     
     return {
-        hands: Object.values(state.hands).reverse()
+        hands: Object.values(state.hands).reverse(),
+        errors: state.errors
     }
 }
 

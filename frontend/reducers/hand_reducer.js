@@ -8,11 +8,9 @@ const handReducer = (state = {}, action) => {
 
     switch (action.type) {
         case RECEIVE_HANDS:
-            // debugger
             return action.hands
 
         case RECEIVE_HAND:
-            // debugger
             return {...state, [action.hand.id]: action.hand}
             
         case REMOVE_HAND:
