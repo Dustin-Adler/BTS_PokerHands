@@ -438,7 +438,6 @@ var errorsReducer = function errorsReducer() {
 
   switch (action.type) {
     case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_ERRORS:
-      debugger;
       return action.errors;
 
     case _actions_hand_actions__WEBPACK_IMPORTED_MODULE_0__.CLEAR_ERRORS:
