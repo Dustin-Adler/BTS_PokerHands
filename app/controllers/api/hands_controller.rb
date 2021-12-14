@@ -61,4 +61,5 @@ class Api::HandsController < ApplicationController
     def hand_params
         params.require(:hand).permit(:hand, :id)
     end
+    
 end
